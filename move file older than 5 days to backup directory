@@ -1,0 +1,8 @@
+# Script will be used to gzip and move file to Backup Directory from required directory
+
+#!/bin/bash
+DIR=/var/logs/
+Backup_DIR=/opt/backup/
+mkdir -p $Backup_DIR
+cd $DIR
+find -type f  -daystart -mtime +5 -exec gzip  {} \; -exec mv {} $Backup_DIR \; 2>/dev/null
