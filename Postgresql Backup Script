@@ -1,0 +1,70 @@
+#!/bin/bash
+
+#Title          :   Postgresql Database Backup Script
+#
+#Project        :   irfanaslam.me
+#
+#Description    :   Use this script to auto backup postgresql
+#
+#
+#
+#Author         :   Muhammad Irfan Aslam
+#
+#Date           :   20191120
+#
+#Version        :   1.0
+#
+#Usage          :   Auto Backup Postgresql
+#
+#Notes          :   This script can requires /bin/sh or /usr/bin/sh to run.
+#======================================================================
+
+LOG_DIR="/var/log/db_backup.log"
+
+echo "============================$TIMESTAMP Starting Backup Script==============================" >>  $LOG_DIR
+
+
+echo "Checking System Load and CPU ..."  >>  $LOG_DIR
+
+LOAD=$(uptime | grep -ohe 'load average[s:][: ].*' | awk '{ print $3 }')
+CPU=$(top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+
+echo "System Load is $LOAD and CPU Usage of Server is $CPU" >>  $LOG_DIR
+
+echo " "  >>  $LOG_DIR
+
+
+TIMESTAMP=$(date +"%F-%H-%M")   #Varable for Time which includes Year, Date, Hour and Minitus 
+
+
+DESTINATION_DIR="/mnt/sharedfolder_client"      # Home Directory for Backup
+
+BACKUP_DIR="$DESTINATION_DIR/$TIMESTAMP"                # Backup  Directory
+
+
+find  "$DESTINATION_DIR" -maxdepth 1 -type d -mtime +30 -exec rm -rf {} \;      #Find the to keep only 30 copies of databases
+
+mkdir -p "$BACKUP_DIR/"
+
+echo "Creating Backup Directory ..."
+echo "Backup Directory for BataBase is $BACKUP_DIR" >> $LOG_DIR
+
+echo " "  >>  $LOG_DIR
+
+#this command to list all database without database template0
+databases=` sudo -i -u postgres  psql template1 -c "\l"|tail -n+4|cut -d'|' -f 1|sed -e '/^ *$/d'|sed -e '$d'|grep -iv "template0"`
+echo "Checking Avalible Databases  ...." >> $LOG_DIR 
+echo "Avalible Databases are Following" >> $LOG_DIR 
+echo "$databases" >> $LOG_DIR
+
+#this command will take all databases from variable "databases" then enter to while to backup using pg_dump then make gzip to every database then  we use || to send email in case of backup fail
+
+echo "$databases" | while read db; do
+$(sudo -i -u postgres pg_dump  $db | gzip > "$BACKUP_DIR/$db.gz") || echo "$HOSTNAME database_dump backup failure" | mail -s "$HOSTNAME database_dump backup failure" i@irfanaslam.me
+done
+
+echo " "  >>  $LOG_DIR
+echo "Checking System Load and CPU ..."  >>  $LOG_DIR
+echo "System Load is $LOAD and CPU Usage of Server is $CPU" >>  $LOG_DIR
+echo " "  >>  $LOG_DIR
+echo "================================Backup is Completed================================" >>  $LOG_DIR
