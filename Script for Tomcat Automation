@@ -1,0 +1,60 @@
+#!/bin/sh#!/bin/sh
+
+#Title          :   Tomcat Automcation Script
+#
+#Project        :   ####
+#
+#Description    :   Use this script to auto restart tomcat when load is high
+#
+#
+#
+#Author         :   Muhammad Irfan Aslam
+#
+#Date           :   20181120
+#
+#Version        :   1.0
+#
+#Usage          :   Auto Restart Tomcat
+#
+#Notes          :   This script can requires /bin/sh or /usr/bin/sh to run.
+#Hours are mentioned in 24 Format
+#if another time slot need to ignor Server Load just add mentioned  lines || $HOUR >= 17 &&  $HOUR <= 19  at line #17
+#======================================================================
+
+
+
+NOW=$(date +"%d-%m-%Y")
+Time=$(date +"%H:%M:%S")
+LOG_DIR=/var/log/auto_restart_tomcat.log
+echo "============================$NOW-$Time==============================" >> $LOG_DIR
+#echo "Check Tomcat Load $NOW-$Time" >> $LOG_DIR
+LOAD=$(uptime | grep -ohe 'load average[s:][: ].*' | awk '{ print $3 }')
+echo "System Load is $LOAD"  >> $LOG_DIR
+CPU=$(top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+echo "CPU Usage of Server is $CPU" >> $LOG_DIR
+HOUR=$(date +%k)
+#echo "Now hour is $HOUR"  >> $LOG_DIR
+if (( $HOUR >= 17 &&  $HOUR <= 19 ));
+then
+        echo "Notification Time From 5PM TO 7PM Tomcat Restart is Not Allowed"  >> $LOG_DIR
+        echo "==========================================================" >> $LOG_DIR
+                echo " "  >> $LOG_DIR
+                echo " "  >> $LOG_DIR
+else
+        trigger=4.00
+        load=`cat /proc/loadavg | awk '{print $1}'`
+        response=`echo | awk -v T=$trigger -v L=$load 'BEGIN{if ( L > T){ print "greater"}}'` >> $LOG_DIR
+        if   [[ $response = "greater" ]]
+        then
+                ps -ef | grep tomcat | grep java | awk ' { print $2 } ' | xargs kill -9
+                echo "Tomcat Server has Stop $NOW-$Time"    >> $LOG_DIR
+                sh /opt/tomcat7/bin/startup.sh
+                echo "Tomcat Server has Started $NOW-$Time"    >> $LOG_DIR
+        else
+                echo "Load is Normal Less than 4 Don't Need to Restart Tomcat" >> $LOG_DIR
+                echo "Load Check has done $NOW-$Time" >> $LOG_DIR
+                echo "==========================================================" >> $LOG_DIR
+                echo " "  >> $LOG_DIR
+                echo " "  >> $LOG_DIR
+        fi
+fi
