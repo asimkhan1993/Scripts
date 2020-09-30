@@ -1,8 +1,33 @@
+#!/bin/bash
+
+#Title          :   Script Move Older Files To Backup Directory
+#
+#Project        :   irfanaslam.me
+#
+#Description    :   Use this script to move file older than 5 days to backup directory
+#
+#
+#
+#Author         :   Muhammad Irfan Aslam
+#
+#Date           :   20200120
+#
+#Version        :   1.0
+#
+#Usage          :   Move Older Files To Backup Directory
+#
+#Notes          :   This script can requires /bin/sh or /usr/bin/sh to run.
+#======================================================================
 # Script will be used to gzip and move file to Backup Directory from required directory
 
 #!/bin/bash
+
 DIR=/var/logs/
+
 Backup_DIR=/opt/backup/
+
 mkdir -p $Backup_DIR
+
 cd $DIR
+
 find -type f  -daystart -mtime +5 -exec gzip  {} \; -exec mv {} $Backup_DIR \; 2>/dev/null
