@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#Title          :   Apache Threads Script
+#
+#Project        :   irfanaslam.me
+#
+#Description    :   Use this script to check no of apache Threads
+#
+#
+#
+#Author         :   Muhammad Irfan Aslam
+#
+#Date           :   20181012
+#
+#Version        :   1.0
+#
+#Usage          :   Apache Threads mentioned in this script is from 0 to 350 can be increase as per requirements
+#
+#Notes          :   This script can requires /bin/sh or /usr/bin/sh to run.
+#======================================================================
+
+
+OUTPUT="$(ps aux | grep -v grep | grep -c httpd)"
+
+
+if [ $OUTPUT == 0 ] || [ $OUTPUT -lt 350 ] ;
+
+then
+  echo "OK: No.of threads=${OUTPUT} | Threads=${OUTPUT}";
+
+exit 0
+
+else
+
+echo "Critical: No.of threads=${OUTPUT}| Threads=${OUTPUT}"
+exit 2
+
+fi
