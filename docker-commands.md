@@ -13,8 +13,9 @@ docker system prune -a
 ## To kill all runing dockers
 docker kill $(docker ps -q)
 
-## enter a container not runing
-docker run --user root -it --rm client sh
+## enter a container not runing as a root
+docker run --user root -it --rm docker-client bash
+
 ## Build a Container from Dockerfile
 docker build -t "container name " .
 ## Run a Container
