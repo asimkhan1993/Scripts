@@ -1,0 +1,50 @@
+@echo off
+
+:start
+
+Rem Input Value For Mac Address
+set /p macaddress=Please Enter MAC Address:
+echo %macaddress%
+
+Rem Input Value For NAME
+set /p username=Please Enter NAME:
+echo %username%
+Rem Input Value For IP Address
+set /p ipaddress=Please Enter IP Address:
+echo %ipaddress%
+Rem Input Value For Host Name
+set /p hostname=Please Enter Host Name:
+echo %hostname%
+Rem Input Value For Description of Host
+set /p description=Please Enter Description of Host:
+echo %description%
+
+Rem Record is added in mac.txt file in the location of script directory
+
+echo ^<staticmap^>>>"mac.txt"
+echo 	 ^<mac^>%macaddress%^</mac^>>>"mac.txt"
+echo 	 ^<cid^>%username%^</cid^>>>"mac.txt"
+echo 	 ^<ipaddr^>%ipaddress%^</ipaddr^>>>"mac.txt"
+echo 	 ^<hostname^>%hostname%^</hostname^>>>"mac.txt"
+echo 	 ^<descr^>^<![CDATA[%description%]]^>^</descr^>>>"mac.txt"
+echo 	 ^<filename/^>>>"mac.txt"
+echo 	 ^<rootpath/^>>>"mac.txt"
+echo 	 ^<defaultleasetime/^>>>"mac.txt"
+echo 	 ^<maxleasetime/^>>>"mac.txt"
+echo 	 ^<gateway/^>>>"mac.txt"
+echo 	 ^<domain/^>>>"mac.txt"
+echo 	 ^<domainsearchlist/^>>>"mac.txt"
+echo 	 ^<ddnsdomain/^>>>"mac.txt"
+echo 	 ^<ddnsdomainprimary/^>>>"mac.txt"
+echo 	 ^<ddnsdomainkeyname/^>>>"mac.txt"
+echo 	 ^<ddnsdomainkey/^>>>"mac.txt"
+echo 	 ^<tftp/^>>>"mac.txt"
+echo 	 ^<ldap/^>>>"mac.txt"
+echo ^</staticmap^>>>"mac.txt"
+
+Rem To insert new record 
+cls
+set choice=
+set /p choice="Do you want to Add New Record? Press 'y' and enter for Yes: "
+if not '%choice%'=='' set choice=%choice:~0,1%
+if '%choice%'=='y' goto start
