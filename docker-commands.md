@@ -70,7 +70,7 @@ docker rmi <IMAGE_ID>
 docker kill $(docker ps -q)
 
 
-# --------Volume Commands---------
+# --------(Volume Commands)---------
 
 
 ### Check the volumes of dockers
