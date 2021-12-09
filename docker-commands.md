@@ -1,4 +1,7 @@
-# -------- (Basic Commands)---------
+#  Docker Commands 
+
+
+## -------- (Basic Commands)---------
 
 ### check running dockers
 docker ps -a
@@ -20,7 +23,7 @@ docker rm CONTAINER_ID
 docker logs CONTAINER-ID/Name
 
 
-# -------- (Build Commands)---------
+## -------- (Build Commands)---------
 
 ### Build a Container from Dockerfile
 docker build -t "container name " .
@@ -28,7 +31,10 @@ docker build -t "container name " .
 ### Building docker image from  docker file
 docker build -t IMAGE_NAME:v1 DOCKERFILE_PATH
 
-# -------- (RUN Commands)---------
+### Build a Container from Custom Dockerfile
+docker build -t container-name:latest -f Dockerfile.custom .
+
+## -------- (RUN Commands)---------
 
 
 ### Run a Container
@@ -40,7 +46,7 @@ docker run -it -p 4002:3001 server
 ### How to create a running container
 docker run -d -it CONTAINER-Name
 
-# -------- (Attach Commands)---------
+## -------- (Attach Commands)---------
 
 
 ### Kill a container
@@ -50,7 +56,7 @@ docker kill CONTAINER_ID
 docker attach CONTAINER_ID
 
 
-# -------- (RUN Commands Inside Container)---------
+## -------- (RUN Commands Inside Container)---------
 
 ### Run commands inside docker container
 docker exec -it CONTAINER_ID command
@@ -61,7 +67,7 @@ docker run --user root -it --rm docker-client bash
 ### Deleting container upon exit
 docker run --rm -it --name deletingcontainer alpine sh
 
-# -------- (Remove Commands)---------
+## -------- (Remove Commands)---------
 
 ###  How to remove docker images
 docker rmi <IMAGE_ID>
@@ -70,7 +76,7 @@ docker rmi <IMAGE_ID>
 docker kill $(docker ps -q)
 
 
-# --------(Volume Commands)---------
+## --------(Volume Commands)---------
 
 
 ### Check the volumes of dockers
@@ -86,7 +92,7 @@ docker volume rm VOLUME_NAME
 docker run -d -it -v $(pwd):/var/www nginx
 
 
-# -------- (Network Commands)---------
+## -------- (Network Commands)---------
 
 
 ### How to list all docker networks  
@@ -107,7 +113,7 @@ docker network connect NETWORK_NAME CONTAINER_ID
 ### Disconnect from a docker network
 docker network disconnect NETWORK_NAME CONTAINER_ID
 
-# -------- ( Commands)---------
+## -------- ( Commands)---------
 
 ### Copying Contents between Containers and the host file system
 docker cp CONTAINER_ID:/file file, docker cp file CONTAINER_ID:/file
@@ -133,7 +139,7 @@ docker rename CONTAINER NEW_NAME
 ### How to restart a docker container
 docker restart CONTAINER_ID
 
-# --------Prune (Delete Commands)---------
+## --------Prune (Delete Commands)---------
 
 ### if container is not working fine stop it and remove container
 docker system prune -a
@@ -144,7 +150,7 @@ docker network prune
 ### How to delete all un-used containers
 docker container prune
 
-# --------(Docker-compose Commands)---------
+## --------(Docker-compose Commands)---------
 
 
 ### Run compose file in parent directory
