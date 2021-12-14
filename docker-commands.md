@@ -4,8 +4,7 @@
 ## -------- (Basic Commands)---------
 
 ### check running dockers
-docker ps -a
-docker container ls, docker ps -a,docker container ls -a
+docker ps -a ,docker container ls , docker container ls -a
 
 ### How to start the docker container
 docker start CONTAINER_ID
